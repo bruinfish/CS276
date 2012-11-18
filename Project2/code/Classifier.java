@@ -178,9 +178,10 @@ public class Classifier {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		Classifier classifier = new Classifier(1000, 1000, 16, 20);
+		Classifier classifier = new Classifier(500, 500, 16, 20);
 		classifier.adaBoost();
 		classifier.end();
 	}
+	
 }
 
