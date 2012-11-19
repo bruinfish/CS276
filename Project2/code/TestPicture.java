@@ -167,7 +167,7 @@ public class TestPicture {
 	}
 	
 	static public void main(String args[]) throws IOException, ClassNotFoundException{
-		int id = 1;
+		int id = 5;
 		TestPicture tp = new TestPicture("./data/test_"+id+".txt", id, "./adaBoostFeature16", 16, (new Double(4*Math.pow(1.25,id-1.0))).intValue());
 		tp.detectFace();
 //		System.out.println((new Double(4*Math.pow(1.25,id-1.0))).intValue());

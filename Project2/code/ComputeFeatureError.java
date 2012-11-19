@@ -15,16 +15,17 @@ public class ComputeFeatureError {
 	
 	private double tpos;
 	private double tneg;
-	private int round = 100;
+	private int round = 200;
 	
 	private SynchronizedCounter counter = new SynchronizedCounter();
 	
 	public ComputeFeatureError(int faceRange, int nonfaceRange, int len, String featureFile) throws IOException, ClassNotFoundException{
-		FeatureGenerator fg = new FeatureGenerator(len);
+//		FeatureGenerator fg = new FeatureGenerator(len);
 		features = new ArrayList<Feature>();
-		features.addAll(fg.gen2RecFeature());
-		features.addAll(fg.gen3RecFeature());
-		features.addAll(fg.gen4RecFeature());
+//		features.addAll(fg.gen2RecFeature());
+//		features.addAll(fg.gen3RecFeature());
+//		features.addAll(fg.gen4RecFeature());
+		
 		
 		this.tpos = 0.5;
 		this.tneg = 0.5;
@@ -43,7 +44,14 @@ public class ComputeFeatureError {
 		int count = 0;
 		while (count < 200) {
 			Feature f = (Feature) ois.readObject();
+			
+			Feature newF = new Feature(f.recs, f.type);
+			newF.direct = f.direct;
+			newF.threshold = f.threshold;
+			newF.error = 0.0;
+			
 			count++;
+			features.add(newF);
 			adaFeatures.add(f);
 		}
 		ois.close();
@@ -100,10 +108,11 @@ public class ComputeFeatureError {
 		// Get Error Rate
 		getError(round);
 		// Sort features according to error rate, pick the one with the lest error rate.
+		Collections.sort(features);
 		int bestID = 0;
 		double error = 0.0;
 		for(int i = 0; i < features.size(); i++){
-			if(isSame(features.get(i), this.adaFeatures.get(round))){
+			if(!features.get(i).isSelected()){
 				bestID = i;
 				error = features.get(i).error;
 				break;
@@ -136,9 +145,9 @@ public class ComputeFeatureError {
 	}
 	
 	public void printResult(){
-		Collections.sort(features);
-		for(int i = 0; i < 10; i++){
-			System.out.println(features.get(i).recs.toString() + "\t" + features.get(i).error);
+//		Collections.sort(features);
+		for(int i = 1; i < 200; i++){
+			System.out.println(i+"\t"+features.get(i).error);
 		}
 		System.out.println("====");
 	}
@@ -162,8 +171,8 @@ public class ComputeFeatureError {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		ComputeFeatureError cfe = new ComputeFeatureError(10, 10, 16, "./adaBoostFeature16");
-		cfe.compare();
+		ComputeFeatureError cfe = new ComputeFeatureError(11838, 45356, 16, "./result/adaBoostFeature16");
+		cfe.adaBoost();
 	}
 
 }
