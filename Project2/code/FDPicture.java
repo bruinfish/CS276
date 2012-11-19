@@ -45,6 +45,13 @@ public class FDPicture {
 		this.computeIntegral();
 	}
 	
+	public FDPicture(int[][] pixels, int len){
+		this.pixels = pixels;
+		this.len = len;
+		this.integral = new int [len+1][len+1];
+		this.computeIntegral();
+	}
+	
 	public void computeIntegral(){
 		int[][] s = new int [len+1][len+1];
 		

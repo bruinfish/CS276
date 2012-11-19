@@ -76,7 +76,7 @@ public class Classifier {
 	public void adaBoost() throws IOException{
 		for (int i = 0; i < round; i++){
 			adaBoostStep(i);
-//			printResult();
+			printResult();
 //			printWeight(i);
 //			System.out.println(this.tneg + "/" + this.tpos);
 //			System.out.println("==================");
